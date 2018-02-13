@@ -13,18 +13,21 @@ import struts.DAO.UserDAO;
 import struts.DAOImpl.UserDAOImpl;
 import struts.Service.UserService;
 import struts.ServiceImpl.UserServiceImpl;
+import struts.user.action.loginUser;
 import db.mysql.DBConnection;
 
 public class Test {
 	private static DBConnection db= new DBConnection();
 	private static UserDAO dao= null;
 	private static UserService service=null;
+	private static loginUser load=null;
 	private static Connection conn=null;
 	Statement sm =null;
 	@BeforeClass
 	public static void before() throws SQLException{
 		Connection conn = db.getConn();
 		dao=new UserDAOImpl(conn);
+		load=new loginUser();
 		service=new UserServiceImpl();
 		Statement sm = conn.createStatement();
 	}
@@ -46,11 +49,17 @@ public class Test {
 		String loginPwd="ss";
 		Assert.assertTrue(dao.login(loginName, loginPwd));
 	}
-	@org.junit.Test
+	@org.junit.Test		//≤‚ ‘“µŒÒ¬ﬂº≠
 	public void TestServiceImpl() throws Exception{
 		String loginName="user";
 		String loginPwd="ss";
 		Assert.assertTrue(service.login(loginName, loginPwd));
+	}
+	@org.junit.Test		//≤‚ ‘action
+	public void TestUserAction() throws Exception{
+		String loginName="user";
+		String loginPwd="ss";
+		load.execute(loginName, loginPwd);
 	}
 	@AfterClass
 	public static void after(){
